@@ -1,0 +1,25 @@
+{
+  "name": "music-streaming-backend",
+  "version": "1.0.0",
+  "description": "Node.js Express backend for JioSaavn Music Streaming website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "music",
+    "streaming",
+    "jiosaavn",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
