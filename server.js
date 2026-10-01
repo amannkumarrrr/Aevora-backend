@@ -21,7 +21,11 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps, curl, or server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        origin.endsWith('.vercel.app') ||
+        process.env.NODE_ENV !== 'production'
+      ) {
         return callback(null, true);
       }
       return callback(new Error('CORS policy: This origin is not allowed by Access-Control-Allow-Origin'));
@@ -89,12 +93,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`===============================================`);
-  console.log(`🎵 Music API Backend running on port ${PORT}`);
-  console.log(`👉 http://localhost:${PORT}`);
-  console.log(`👉 Health check: http://localhost:${PORT}/health`);
-  console.log(`===============================================`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(`🎵 Music API Backend running on port ${PORT}`);
+    console.log(`👉 http://localhost:${PORT}`);
+    console.log(`👉 Health check: http://localhost:${PORT}/health`);
+    console.log(`===============================================`);
+  });
+}
 
 module.exports = app;
