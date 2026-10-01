@@ -26,10 +26,10 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps, curl, or server-to-server)
       if (!origin) return callback(null, true);
-      const cleanOrigin = origin.replace(/\/+$/, '');
+      const cleanOrigin = origin.replace(/\/+$/, '').toLowerCase();
       if (
-        allowedOrigins.indexOf(cleanOrigin) !== -1 ||
         cleanOrigin.endsWith('.vercel.app') ||
+        allowedOrigins.some((o) => o.toLowerCase() === cleanOrigin) ||
         process.env.NODE_ENV !== 'production'
       ) {
         return callback(null, true);
@@ -37,6 +37,8 @@ app.use(
       return callback(new Error('CORS policy: This origin is not allowed by Access-Control-Allow-Origin'));
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
   })
 );
 
