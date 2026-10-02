@@ -75,14 +75,17 @@ async function getSong(req, res) {
 async function getLyrics(req, res) {
   try {
     const query = req.query.query || req.query.id;
-    if (!query) {
+    const title = req.query.title || '';
+    const artist = req.query.artist || req.query.singers || '';
+
+    if (!query && (!title || !artist)) {
       return res.status(400).json({
         success: false,
         error: 'Query parameter is required to fetch lyrics',
       });
     }
 
-    const lyrics = await musicService.getLyrics(query);
+    const lyrics = await musicService.getLyrics(query, artist, title);
     if (!lyrics) {
       return res.json({
         success: true,
